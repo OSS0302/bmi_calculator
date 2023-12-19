@@ -1,5 +1,6 @@
 import 'package:bmi_calculator/result/result_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // 메인 화면 나누기
 class MainScreen extends StatefulWidget {
@@ -14,12 +15,20 @@ class _MainScreenState extends State<MainScreen> {
   final _heightController = TextEditingController();
   final _weightController = TextEditingController();
 
-  // dispose
+  // dispose 종료되는 시점
   @override
   void dispose() {
+    // 저장하기
+    save();
     super.dispose();
     _heightController.dispose();
     _weightController.dispose();
+  }
+
+  Future save() async {
+    final perfs = await SharedPreferences.getInstance();
+    await perfs.setDouble('height',double.parse(_heightController.text));
+    await perfs.setDouble('weight', double.parse(_heightController.text));
   }
 
   @override
