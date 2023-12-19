@@ -21,7 +21,7 @@ class _ResultScreenState extends State<ResultScreen> {
       appBar: AppBar(
         title: Text('결과'),
       ),
-      body: Center(
+      body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
