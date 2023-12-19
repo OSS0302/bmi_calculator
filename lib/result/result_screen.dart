@@ -29,11 +29,23 @@ class ResultScreen extends StatelessWidget {
 
   // bmi 결과에 따라서 아이콘 변경 되는 로직
   Widget _buildIcon(double bmi) {
-    Icon icon = Icon(Icons.sentiment_dissatisfied,color: Colors.red,);
+    Icon icon = const Icon(
+      Icons.sentiment_dissatisfied,
+      color: Colors.red,
+      size: 100,
+    );
     if (bmi >= 23) {
-      icon = const Icon(Icons.sentiment_very_dissatisfied,color: Colors.yellow,);
+      icon = const Icon(
+        Icons.sentiment_very_dissatisfied,
+        color: Colors.yellow,
+        size: 100,
+      );
     } else if (bmi >= 18.5) {
-      icon = const Icon(Icons. sentiment_satisfied,color: Colors.green,);
+      icon = const Icon(
+        Icons.sentiment_satisfied,
+        color: Colors.green,
+        size: 100,
+      );
     }
     return icon;
   }

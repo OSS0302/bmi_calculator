@@ -11,6 +11,16 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _heightController = TextEditingController();
+  final _weightController = TextEditingController();
+
+  // dispose
+  @override
+  void dispose() {
+    super.dispose();
+    _heightController.dispose();
+    _weightController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +36,7 @@ class _MainScreenState extends State<MainScreen> {
           children: [
             // 잘못된 정보를 입력 했을때 에러를 처리
             TextFormField(
+              controller: _heightController,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: '키를 입력하세요',
@@ -42,6 +53,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
             const SizedBox(height: 8),
             TextFormField(
+              controller: _weightController,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: '몸무게 를 입력하세요',
@@ -57,15 +69,15 @@ class _MainScreenState extends State<MainScreen> {
             const SizedBox(height: 8),
             ElevatedButton(
                 onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
+                  if (_formKey.currentState?.validate() == false) {
                     return;
                   }
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => ResultScreen(
-                        height: 189,
-                        weight: 77.5,
+                        height: double.parse(_heightController.text),
+                        weight: double.parse(_weightController.text),
                       ),
                     ),
                   );
