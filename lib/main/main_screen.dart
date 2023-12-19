@@ -16,6 +16,7 @@ class _MainScreenState extends State<MainScreen> {
   final _weightController = TextEditingController();
 
   // dispose 종료되는 시점
+  //메모리 헤제
   @override
   void dispose() {
     super.dispose();
@@ -24,7 +25,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   // 비동기: 오래걸리는 일 처리하는 것이고 async 키워드와 함꼐 쓴다.
-  // 저장하기 // 디버깅 해서 오류 찾아내기
+  // 저장하기 // 디버깅 해서 오류 찾아내기딩
   Future save() async {
     final perfs = await SharedPreferences.getInstance();
     await perfs.setDouble('height', double.parse(_heightController.text));
@@ -44,7 +45,7 @@ class _MainScreenState extends State<MainScreen> {
       print('키: $height , 몸무게: $weight');
     }
   }
-
+  // 특정 생명주기 의 특정 동작을 개발자가 재정의한거 오버라이딩 한다.
   @override
   void initState() {
     super.initState();
