@@ -24,7 +24,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   // 비동기: 오래걸리는 일 처리하는 것이고 async 키워드와 함꼐 쓴다.
-  // 저장하기
+  // 저장하기 // 디버깅 해서 오류 찾아내기
   Future save() async {
     final perfs = await SharedPreferences.getInstance();
     await perfs.setDouble('height', double.parse(_heightController.text));
