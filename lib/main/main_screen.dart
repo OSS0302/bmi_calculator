@@ -25,6 +25,7 @@ class _MainScreenState extends State<MainScreen> {
     _weightController.dispose();
   }
 
+  // 비동기: 오래걸리는 일 처리하는 것이고 async 키워드와 함꼐 쓴다.
   Future save() async {
     final perfs = await SharedPreferences.getInstance();
     await perfs.setDouble('height',double.parse(_heightController.text));
@@ -61,6 +62,7 @@ class _MainScreenState extends State<MainScreen> {
               },
             ),
             const SizedBox(height: 8),
+
             TextFormField(
               controller: _weightController,
               decoration: const InputDecoration(
@@ -76,6 +78,7 @@ class _MainScreenState extends State<MainScreen> {
               },
             ),
             const SizedBox(height: 8),
+
             ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState?.validate() == false) {
