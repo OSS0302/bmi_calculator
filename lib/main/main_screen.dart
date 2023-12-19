@@ -9,7 +9,7 @@ class MainScreen extends StatefulWidget {
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
-
+ // 클래스 상속구조
 class _MainScreenState extends State<MainScreen> {
   final _formKey = GlobalKey<FormState>();
   final _heightController = TextEditingController();
@@ -45,7 +45,8 @@ class _MainScreenState extends State<MainScreen> {
       print('키: $height , 몸무게: $weight');
     }
   }
-  // 특정 생명주기 의 특정 동작을 개발자가 재정의한거 오버라이딩 한다.
+  // 특정 생명주기 의 특정 동작을 개발자가 재정의한거 메서드 오버라이딩 한다.
+
   @override
   void initState() {
     super.initState();
