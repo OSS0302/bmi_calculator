@@ -1,3 +1,4 @@
+import 'package:bmi_calculator/result/result_screen.dart';
 import 'package:flutter/material.dart';
 
 // 메인 화면 나누기
@@ -56,7 +57,18 @@ class _MainScreenState extends State<MainScreen> {
             const SizedBox(height: 8),
             ElevatedButton(
                 onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {}
+                  if (_formKey.currentState?.validate() ?? false) {
+                    return;
+                  }
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ResultScreen(
+                        height: 189,
+                        weight: 77.5,
+                      ),
+                    ),
+                  );
                 },
                 child: const Text('결과')),
           ],
