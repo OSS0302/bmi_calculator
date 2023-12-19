@@ -18,18 +18,38 @@ class _MainScreenState extends State<MainScreen> {
   // dispose 종료되는 시점
   @override
   void dispose() {
-    // 저장하기
-    save();
     super.dispose();
     _heightController.dispose();
     _weightController.dispose();
   }
 
   // 비동기: 오래걸리는 일 처리하는 것이고 async 키워드와 함꼐 쓴다.
+  // 저장하기
   Future save() async {
     final perfs = await SharedPreferences.getInstance();
-    await perfs.setDouble('height',double.parse(_heightController.text));
+    await perfs.setDouble('height', double.parse(_heightController.text));
     await perfs.setDouble('weight', double.parse(_heightController.text));
+  }
+
+  // load
+  Future<void> load() async {
+    final prefs = await SharedPreferences.getInstance();
+    final double? height = prefs.getDouble('height');
+    final double? weight = prefs.getDouble('weight');
+
+    if (height != null && weight != null) {
+      _heightController.text = '$height';
+      _weightController.text = '$weight';
+      // 수동 테스트 하기
+      print('키: $height , 몸무게: $weight');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    load(); // 화면이 시작될떄 로드 한다.
   }
 
   @override
@@ -84,13 +104,17 @@ class _MainScreenState extends State<MainScreen> {
                   if (_formKey.currentState?.validate() == false) {
                     return;
                   }
+                  // 저장하기
+                  save();
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ResultScreen(
-                        height: double.parse(_heightController.text),
-                        weight: double.parse(_weightController.text),
-                      ),
+                      builder: (context) =>
+                          ResultScreen(
+                            height: double.parse(_heightController.text),
+                            weight: double.parse(_weightController.text),
+                          ),
                     ),
                   );
                 },
