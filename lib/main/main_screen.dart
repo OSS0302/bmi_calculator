@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+// 메인 화면 나누기
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
