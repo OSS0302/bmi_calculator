@@ -1,5 +1,9 @@
+import 'dart:convert';
+
+import 'package:bmi_calculator/model/bmi_calculator_model.dart';
 import 'package:bmi_calculator/result/result_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // 메인 화면 나누기
@@ -9,7 +13,8 @@ class MainScreen extends StatefulWidget {
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
- // 클래스 상속구조
+
+// 클래스 상속구조
 class _MainScreenState extends State<MainScreen> {
   final _formKey = GlobalKey<FormState>();
   final _heightController = TextEditingController();
@@ -39,12 +44,13 @@ class _MainScreenState extends State<MainScreen> {
     final double? weight = prefs.getDouble('weight');
 
     if (height != null && weight != null) {
-      _heightController.text = '$height';
-      _weightController.text = '$weight';
+      _heightController.text = '${height.toInt()}';
+      _weightController.text = '${weight.toInt()}';
       // 수동 테스트 하기
       print('키: $height , 몸무게: $weight');
     }
   }
+
   // 특정 생명주기 의 특정 동작을 개발자가 재정의한거 메서드 오버라이딩 한다.
 
   @override
@@ -68,6 +74,16 @@ class _MainScreenState extends State<MainScreen> {
           children: [
             // 잘못된 정보를 입력 했을때 에러를 처리
             TextFormField(
+              onChanged: (value) {
+
+                if (value.contains('.')) {
+                  print(value);
+                  setState(() {
+                    _heightController.text.replaceAll('.', '');
+                  });
+                }
+              },
+
               controller: _heightController,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
@@ -108,16 +124,17 @@ class _MainScreenState extends State<MainScreen> {
                   }
                   // 저장하기
                   save();
-
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          ResultScreen(
-                            height: double.parse(_heightController.text),
-                            weight: double.parse(_weightController.text),
-                          ),
-                    ),
+                  final bmiCalculator = BmiCalculator(
+                      height: double.parse(_heightController.text),
+                      weight: double.parse(_weightController.text));
+                  // go _ rounter 사용하기
+                  context.push(
+                    Uri(
+                      path: '/result',
+                      queryParameters: {
+                        'bmiCalculator': jsonEncode(bmiCalculator.toJson()),
+                      },
+                    ).toString(),
                   );
                 },
                 child: const Text('결과')),

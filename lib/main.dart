@@ -1,4 +1,4 @@
-import 'package:bmi_calculator/main/main_screen.dart';
+import 'package:bmi_calculator/main/routes.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,13 +10,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      routerConfig: router,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MainScreen(),
     );
   }
 }

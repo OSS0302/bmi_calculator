@@ -1,14 +1,14 @@
+import 'package:bmi_calculator/model/bmi_calculator_model.dart';
 import 'package:flutter/material.dart';
 
 class ResultScreen extends StatelessWidget {
-  final double height;
-  final double weight;
+
+  final BmiCalculator bmiCalculator;
 
   const ResultScreen({
-    Key? key,
-    required this.height,
-    required this.weight,
-  }) : super(key: key);
+    super.key,
+    required this.bmiCalculator,
+  });
 
   //메서드 result bmi 결과값
   String _calBmi(double bmi) {
@@ -53,7 +53,7 @@ class ResultScreen extends StatelessWidget {
   //const 위젯 안에 변수가 있으면 const 를 붙이면 안되고 변수가없으면 붙인다.
   @override
   Widget build(BuildContext context) {
-    final double bmi = weight / ((height / 100) * (height / 100));
+    final double bmi = bmiCalculator.weight / ((bmiCalculator.height / 100) * (bmiCalculator.height / 100));
     String result = '정상';
 
     return Scaffold(
@@ -77,4 +77,6 @@ class ResultScreen extends StatelessWidget {
       ),
     );
   }
+
+
 }
