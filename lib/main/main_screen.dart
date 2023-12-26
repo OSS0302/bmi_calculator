@@ -67,79 +67,96 @@ class _MainScreenState extends State<MainScreen> {
         title: const Text('비만도 게산기'),
       ),
       // 텍스트 폼 필드를 사용하기위해서 는 폼으로 감싸야한다.
-      body: Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            // 잘못된 정보를 입력 했을때 에러를 처리
-            TextFormField(
-              onChanged: (value) {
+      body: Stack(
+        children: [
+          Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                // 잘못된 정보를 입력 했을때 에러를 처리
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    onChanged: (value) {
+                      if (value.contains('.')) {
+                        print(value);
+                        setState(() {
+                          _heightController.text.replaceAll('.', '');
+                        });
+                      }
+                    },
 
-                if (value.contains('.')) {
-                  print(value);
-                  setState(() {
-                    _heightController.text.replaceAll('.', '');
-                  });
-                }
-              },
+                    controller: _heightController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: '키를 입력하세요',
+                    ),
+                    keyboardType: TextInputType.number,
 
-              controller: _heightController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: '키를 입력하세요',
-              ),
-              keyboardType: TextInputType.number,
+                    //잘못된 값이 들어가면 validator를 사용한다.
+                    validator: (value) {
+                      if (value != null && value.isEmpty) {
+                        return '키를 입력하세요';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                const SizedBox(height: 8),
 
-              //잘못된 값이 들어가면 validator를 사용한다.
-              validator: (value) {
-                if (value != null && value.isEmpty) {
-                  return '키를 입력하세요';
-                }
-                return null;
-              },
+                TextFormField(
+                  controller: _weightController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: '몸무게 를 입력하세요',
+                  ),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value != null && value.isEmpty) {
+                      return '몸무게를 입력하세요';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 8),
+
+                ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState?.validate() == false) {
+                        return;
+                      }
+                      // 저장하기
+                      save();
+                      final bmiCalculator = BmiCalculator(
+                          height: double.parse(_heightController.text),
+                          weight: double.parse(_weightController.text));
+                      // go _ rounter 사용하기
+                      context.push(
+                        Uri(
+                          path: '/result',
+                          queryParameters: {
+                            'bmiCalculator': jsonEncode(bmiCalculator.toJson()),
+                          },
+                        ).toString(),
+                      );
+                    },
+                    child: const Text('결과')),
+                Row(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 1.0,
+                      height: MediaQuery.of(context).size.width * 0.6,
+                      child: Image.network(
+                          'https://img.hankyung.com/photo/202312/AKR20231215023400009_01_i_P4.jpg'),
+                    ),
+                  ],
+                ),
+                Text('BMI 계산공식 : '),
+              ],
             ),
-            const SizedBox(height: 8),
-
-            TextFormField(
-              controller: _weightController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: '몸무게 를 입력하세요',
-              ),
-              keyboardType: TextInputType.number,
-              validator: (value) {
-                if (value != null && value.isEmpty) {
-                  return '몸무게를 입력하세요';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 8),
-
-            ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState?.validate() == false) {
-                    return;
-                  }
-                  // 저장하기
-                  save();
-                  final bmiCalculator = BmiCalculator(
-                      height: double.parse(_heightController.text),
-                      weight: double.parse(_weightController.text));
-                  // go _ rounter 사용하기
-                  context.push(
-                    Uri(
-                      path: '/result',
-                      queryParameters: {
-                        'bmiCalculator': jsonEncode(bmiCalculator.toJson()),
-                      },
-                    ).toString(),
-                  );
-                },
-                child: const Text('결과')),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
